@@ -1,3 +1,4 @@
+package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -5,8 +6,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class Controller implements Initializable {
 
@@ -30,13 +33,30 @@ public class Controller implements Initializable {
         //POUR LA SOMME
         try {
         //NOMBRES
-        int nb1=Integer.parseInt(nbr1.getText().toString());
-        int nb2=Integer.parseInt(nbr2.getText().toString());
+        String nb1=nbr1.getText();
+        String nb2=nbr2.getText();
+            Pipe p1 = new BlockingQueue();
+            Pipe p2 = new BlockingQueue();
+            Pipe p3 = new BlockingQueue();
+            p1.dataIN("+");
+            p1.dataIN(nb1);
+            p1.dataIN(nb2);
+            Filter a1 = new GUI(null,p1);
+            Filter b1 = new Calcul(p1,p2);
+            Filter d1 = new Trace(p2,p3);
+            Thread th1 = new Thread( a1 );
+            Thread th2 = new Thread( b1 );
+            Thread th4 = new Thread( d1 );
+            th1.start();
+            th2.start();
+            th4.start();
+
+
 
             //code
 
         //RESULTAT
-        resultat.setText("Result de la somme");
+        resultat.setText(p3.dataOUT());
 
         } catch (Exception exc) {
             System.out.println(exc);
@@ -49,13 +69,29 @@ public class Controller implements Initializable {
         //POUR LE PRODUIT
         try{
         //NOMBRES
-        int nb1=Integer.parseInt(nbr1.getText().toString());
-        int nb2=Integer.parseInt(nbr2.getText().toString());
+            String nb1=nbr1.getText();
+            String nb2=nbr2.getText();
+            Pipe p1 = new BlockingQueue();
+            Pipe p2 = new BlockingQueue();
+            Pipe p3 = new BlockingQueue();
+            p1.dataIN("*");
+            p1.dataIN(nb1);
+            p1.dataIN(nb2);
+            Filter a1 = new GUI(null,p1);
+            Filter b1 = new Calcul(p1,p2);
+            Filter d1 = new Trace(p2,p3);
+            Thread th1 = new Thread( a1 );
+            Thread th2 = new Thread( b1 );
+            Thread th4 = new Thread( d1 );
+            th1.start();
+            th2.start();
+            th4.start();
 
-        //code
+            //code
 
-        //RESULTAT
-        resultat.setText("Result du produit");
+            //RESULTAT
+            resultat.setText(p3.dataOUT());
+
     } catch (Exception exc) {
         System.out.println(exc);
         err.setText("Les champs doivent contenir un nombre !!!");
@@ -68,12 +104,29 @@ public class Controller implements Initializable {
         //POUR LE FACTORIEL
         try {
         //NOMBRES
-        int nb1=Integer.parseInt(nbr1.getText().toString());
+            String nb1=nbr1.getText();
+            Pipe p1 = new BlockingQueue();
+            Pipe p2 = new BlockingQueue();
+            Pipe p3 = new BlockingQueue();
+            p1.dataIN("!");
+            p1.dataIN(nb1);
+            Filter a1 = new GUI(null,p1);
+            Filter b1 = new Calcul(p1,p2);
+            Filter d1 = new Trace(p2,p3);
+            Thread th1 = new Thread( a1 );
+            Thread th2 = new Thread( b1 );
+            Thread th4 = new Thread( d1 );
+            th1.start();
+            th2.start();
+            th4.start();
+
+
 
             //code
 
-        //RESULTAT
-        resultat.setText("Result du factoriel");
+            //RESULTAT
+            resultat.setText(p3.dataOUT());
+
     } catch (Exception exc) {
         System.out.println(exc);
         err.setText("Entrez un nombre dans le champ -Nombre1- !!!");
@@ -90,11 +143,14 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void Trace(ActionEvent event){
+    public void Trace(ActionEvent event) throws IOException {
         //POUR LA TRACE
-
-        //code
-    }
+        String file="..\\..\\fichier.txt";
+        try {
+            Runtime.getRuntime().exec("cmd /c start" + file);
+        }
+        catch (IOException e)
+        {  e.printStackTrace();}  }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

@@ -1,10 +1,10 @@
 
-
+package sample;
 import java.util.Scanner;
 
-public  class FilterA extends Filter {
+public  class GUI extends Filter {
  
-    public FilterA(Pipe _dataINPipe, Pipe _dataOUTPipe) {
+    public GUI(Pipe _dataINPipe, Pipe _dataOUTPipe) {
 		super();
 		this._dataINPipe = _dataINPipe;
 		this._dataOUTPipe = _dataOUTPipe;
